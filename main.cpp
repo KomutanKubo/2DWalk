@@ -48,6 +48,7 @@ int main() {
     double successRate = randomWalk(start, target, sample, steps);
     double standart_deviation = standartDeviation(successRate, sample);
 
+
     double z = 1.96;
     double lowerBound = successRate - z * standart_deviation;
     double upperBound = successRate + z * standart_deviation;
