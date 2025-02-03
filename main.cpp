@@ -46,15 +46,15 @@ int main() {
     int steps = 800;
 
     double successRate = randomWalk(start, target, sample, steps);
-    double standardError = standartDeviation(successRate, sample); // Hata düzeltildi!
+    double standart_deviation = standartDeviation(successRate, sample);
 
     double z = 1.96;
-    double lowerBound = successRate - z * standardError;
-    double upperBound = successRate + z * standardError;
+    double lowerBound = successRate - z * standart_deviation;
+    double upperBound = successRate + z * standart_deviation;
 
     cout <<"2D random walk with " << steps << " steps and " << sample << " sample" << endl;
     cout << "START: (" << start.x << "," << start.y << ") ----> DESTINATION: (" << target.x << "," << target.y <<")" << endl;
     cout << "Success rate: " << successRate * 100 << "%" << endl;
-    cout << "Standard Error: " << standardError * 100 << "%" << endl;
+    cout << "Standard Error: " << standart_deviation * 100 << "%" << endl;
     cout << "95% Confidence Interval: (" << lowerBound * 100 << "%, " << upperBound * 100 << "%)" << endl;
 }
