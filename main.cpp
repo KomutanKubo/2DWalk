@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include <cmath>
 using namespace std;
 
 struct Location{
@@ -7,7 +8,7 @@ struct Location{
 };
 
 
-double randomWalk(Location start, const Location& target, int sample, int sets) {
+double randomWalk(Location start, const Location& target, int sample, int steps) {
     int successCount = 0;
 
     random_device rd;
@@ -18,7 +19,7 @@ double randomWalk(Location start, const Location& target, int sample, int sets) 
         Location current = start;
 
 
-        for (int j = 0; j < sets; ++j) {
+        for (int j = 0; j < steps; ++j) {
             int move = dist(gen);
             if (move == 0) current.x--;   // left
             else if (move == 1) current.x++;  // right
@@ -34,13 +35,26 @@ double randomWalk(Location start, const Location& target, int sample, int sets) 
     return (double)successCount / sample;
 }
 
+double standartDeviation(double successRate, int sample){
+    return sqrt((successRate * (1 - successRate)) / sample);
+}
+
 int main() {
     Location start = {0, 0};
     Location target = {2, 3};
-    int sample = 100000;
-    int sets = 100;
+    int sample = 200000;
+    int steps = 800;
 
-    double successRate = randomWalk(start, target, sample, sets);
+    double successRate = randomWalk(start, target, sample, steps);
+    double standardError = standartDeviation(successRate, sample); // Hata düzeltildi!
+
+    double z = 1.96;
+    double lowerBound = successRate - z * standardError;
+    double upperBound = successRate + z * standardError;
+
+    cout <<"2D random walk with " << steps << " steps and " << sample << " sample" << endl;
+    cout << "START: (" << start.x << "," << start.y << ") ----> DESTINATION: (" << target.x << "," << target.y <<")" << endl;
     cout << "Success rate: " << successRate * 100 << "%" << endl;
-    return 0;
+    cout << "Standard Error: " << standardError * 100 << "%" << endl;
+    cout << "95% Confidence Interval: (" << lowerBound * 100 << "%, " << upperBound * 100 << "%)" << endl;
 }
